@@ -1,17 +1,21 @@
 package com.bankex.pay.ui;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.bankex.pay.BuildConfig;
+import com.bankex.pay.R;
 import com.bankex.pay.entity.Wallet;
+import com.bankex.pay.repository.PreferenceRepositoryType;
 import com.bankex.pay.router.ManageWalletsRouter;
+import com.bankex.pay.router.OnBoardingRouter;
 import com.bankex.pay.router.TransactionsRouter;
 import com.bankex.pay.viewmodel.SplashViewModel;
 import com.bankex.pay.viewmodel.SplashViewModelFactory;
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 
 import javax.inject.Inject;
 
@@ -24,17 +28,23 @@ public class SplashActivity extends AppCompatActivity {
     SplashViewModelFactory splashViewModelFactory;
     SplashViewModel splashViewModel;
 
+    @Inject
+    PreferenceRepositoryType preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
+        AndroidInjection.inject(this);
+        setContentView(R.layout.ac_splash);
         Fabric.with(this, new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build()).build());
-
-        splashViewModel = ViewModelProviders.of(this, splashViewModelFactory)
-                .get(SplashViewModel.class);
-        splashViewModel.wallets().observe(this, this::onWallets);
+        if (preferences.getOnBoardingFlag()) {
+            splashViewModel = ViewModelProviders.of(this, splashViewModelFactory)
+                    .get(SplashViewModel.class);
+            splashViewModel.wallets().observe(this, this::onWallets);
+        } else {
+            new OnBoardingRouter().open(this);
+        }
     }
 
     private void onWallets(Wallet[] wallets) {
@@ -45,5 +55,4 @@ public class SplashActivity extends AppCompatActivity {
             new TransactionsRouter().open(this, true);
         }
     }
-
 }

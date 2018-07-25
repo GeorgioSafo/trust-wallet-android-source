@@ -31,14 +31,8 @@ public class AddWalletView extends FrameLayout implements View.OnClickListener {
 
 	private void init(@LayoutRes int layoutId) {
 		LayoutInflater.from(getContext()).inflate(layoutId, this, true);
-		findViewById(R.id.new_account_action).setOnClickListener(this);
-		findViewById(R.id.import_account_action).setOnClickListener(this);
-
-        ViewPager viewPager = findViewById(R.id.intro);
-        if (viewPager != null) {
-            viewPager.setPageTransformer(false, new DepthPageTransformer());
-            viewPager.setAdapter(new IntroPagerAdapter());
-        }
+		findViewById(R.id.createWallet).setOnClickListener(this);
+		findViewById(R.id.importWallet).setOnClickListener(this);
 	}
 
 	@Override
@@ -73,53 +67,7 @@ public class AddWalletView extends FrameLayout implements View.OnClickListener {
 		void onImportWallet(View view);
 	}
 
-	private static class IntroPagerAdapter extends PagerAdapter {
-        private int[] titles = new int[] {
-                R.string.intro_title_first_page,
-                R.string.welcome_erc20_label_title,
-                R.string.intro_title_second_page,
-                R.string.intro_title_third_page,
-        };
-        private int[] messages = new int[] {
-                R.string.intro_message_first_page,
-                R.string.welcome_erc20_label_description,
-                R.string.intro_message_second_page,
-                R.string.intro_message_third_page,
-        };
-        private int[] images = new int[] {
-                R.mipmap.onboarding_lock,
-                R.drawable.onboarding_erc20,
-                R.mipmap.onboarding_open_source,
-                R.mipmap.onboarding_rocket
-        };
 
-        @NonNull
-        @Override
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view = LayoutInflater.from(container.getContext())
-                    .inflate(R.layout.layout_page_intro, container, false);
-            ((TextView) view.findViewById(R.id.title)).setText(titles[position]);
-            ((TextView) view.findViewById(R.id.message)).setText(messages[position]);
-            ((ImageView) view.findViewById(R.id.img)).setImageResource(images[position]);
-            container.addView(view);
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return titles.length;
-        }
-
-        @Override
-        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-            return view == object;
-        }
-
-        @Override
-        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((View) object);
-        }
-    }
 
     private static class DepthPageTransformer implements ViewPager.PageTransformer {
         private static final float MIN_SCALE = 0.75f;

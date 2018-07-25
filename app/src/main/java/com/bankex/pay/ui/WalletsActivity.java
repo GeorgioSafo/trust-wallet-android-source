@@ -222,7 +222,7 @@ public class WalletsActivity extends BaseActivity implements
 	private void onFetchWallet(Wallet[] wallets) {
 		if (wallets == null || wallets.length == 0) {
 			dissableDisplayHomeAsUp();
-			AddWalletView addWalletView = new AddWalletView(this, R.layout.layout_empty_add_account);
+			AddWalletView addWalletView = new AddWalletView(this, R.layout.ac_start);
 			addWalletView.setOnNewWalletClickListener(this);
 			addWalletView.setOnImportWalletClickListener(this);
 			systemView.showEmpty(addWalletView);

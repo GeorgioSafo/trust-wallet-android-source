@@ -16,11 +16,22 @@ public class SharedPreferenceRepository implements PreferenceRepositoryType {
 	private static final String GAS_PRICE_KEY  ="gas_price";
     private static final String GAS_LIMIT_KEY  ="gas_limit";
 	private static final String GAS_LIMIT_FOR_TOKENS_KEY = "gas_limit_for_tokens";
+	private static final String KEY_ONBOARDING_FLAG = "KEY_ONBOARDING_FLAG";
 
 	private final SharedPreferences pref;
 
 	public SharedPreferenceRepository(Context context) {
 		pref = PreferenceManager.getDefaultSharedPreferences(context);
+	}
+
+	@Override
+	public Boolean getOnBoardingFlag() {
+		return pref.getBoolean(KEY_ONBOARDING_FLAG, false);
+	}
+
+	@Override
+	public void setCurrentOnBoardingFlag(Boolean flag) {
+		pref.edit().putBoolean(KEY_ONBOARDING_FLAG, flag).apply();
 	}
 
 	@Override

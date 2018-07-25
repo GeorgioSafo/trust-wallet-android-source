@@ -65,6 +65,7 @@ project.ext {
     rxJavaVersion = "2.1.6"
     rxAndroidVersion = "2.0.1"
     daggerVersion = "2.11"
+    butterknifeVersion = '8.8.1'
 }
 
 dependencies {
@@ -94,6 +95,7 @@ dependencies {
     implementation "com.github.apl-devs:appintro:v4.2.2"
     implementation 'com.romandanylyk:pageindicatorview:1.0.0'
     implementation "com.journeyapps:zxing-android-embedded:3.2.0@aar"
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
     // ReactiveX
     implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"

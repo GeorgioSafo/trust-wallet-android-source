@@ -5,6 +5,7 @@ import com.bankex.pay.ui.ConfirmationActivity;
 import com.bankex.pay.ui.GasSettingsActivity;
 import com.bankex.pay.ui.ImportWalletActivity;
 import com.bankex.pay.ui.MyAddressActivity;
+import com.bankex.pay.ui.OnBoardingActivity;
 import com.bankex.pay.ui.SendActivity;
 import com.bankex.pay.ui.SettingsActivity;
 import com.bankex.pay.ui.SplashActivity;
@@ -21,6 +22,10 @@ public abstract class BuildersModule {
 	@ActivityScope
 	@ContributesAndroidInjector(modules = SplashModule.class)
 	abstract SplashActivity bindSplashModule();
+
+	@ActivityScope
+	@ContributesAndroidInjector(modules = OnBoardingModule.class)
+	abstract OnBoardingActivity bindOnboardingModule();
 
 	@ActivityScope
 	@ContributesAndroidInjector(modules = AccountsManageModule.class)

@@ -135,7 +135,7 @@ public class SystemView extends FrameLayout implements View.OnClickListener {
 
 	public void showEmpty(View view) {
 		hideAllComponents();
-		LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		lp.gravity = Gravity.CENTER_VERTICAL;
 		view.setLayoutParams(lp);
 		emptyBox.setVisibility(VISIBLE);
