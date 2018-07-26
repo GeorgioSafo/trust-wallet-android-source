@@ -2,6 +2,7 @@ package com.bankex.pay.di;
 
 import com.bankex.pay.ui.AddTokenActivity;
 import com.bankex.pay.ui.ConfirmationActivity;
+import com.bankex.pay.ui.FirstActivity;
 import com.bankex.pay.ui.GasSettingsActivity;
 import com.bankex.pay.ui.ImportWalletActivity;
 import com.bankex.pay.ui.MyAddressActivity;
@@ -21,7 +22,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class BuildersModule {
 	@ActivityScope
 	@ContributesAndroidInjector(modules = SplashModule.class)
-	abstract SplashActivity bindSplashModule();
+	abstract FirstActivity bindSplashModule();
 
 	@ActivityScope
 	@ContributesAndroidInjector(modules = OnBoardingModule.class)
