@@ -108,6 +108,8 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-android-processor:$project.daggerVersion"
     // if you are not using support library, include this instead
     implementation "com.google.dagger:dagger-android:$project.daggerVersion"
+
+    implementation 'com.github.blocoio:faker:1.0.1'
     // Tests
     testImplementation "junit:junit:4.12"
     androidTestImplementation("com.android.support.test.espresso:espresso-core:2.2.2", {

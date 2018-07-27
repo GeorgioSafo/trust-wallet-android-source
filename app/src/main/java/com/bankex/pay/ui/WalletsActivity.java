@@ -24,6 +24,7 @@ import com.bankex.pay.util.KeyboardUtils;
 import com.bankex.pay.viewmodel.WalletsViewModel;
 import com.bankex.pay.viewmodel.WalletsViewModelFactory;
 import com.bankex.pay.widget.AddWalletView;
+import com.bankex.pay.widget.AttentionWalletView;
 import com.bankex.pay.widget.BackupView;
 import com.bankex.pay.widget.BackupWarningView;
 import com.bankex.pay.widget.SystemView;
@@ -36,84 +37,84 @@ import static com.bankex.pay.C.IMPORT_REQUEST_CODE;
 import static com.bankex.pay.C.SHARE_REQUEST_CODE;
 
 public class WalletsActivity extends BaseActivity implements
-		View.OnClickListener,
+        View.OnClickListener,
         AddWalletView.OnNewWalletClickListener,
-        AddWalletView.OnImportWalletClickListener {
+        AddWalletView.OnImportWalletClickListener, AttentionWalletView.OnCopyPhraseClickListener, AttentionWalletView.OnNextClickListener {
 
-	@Inject
+    @Inject
     WalletsViewModelFactory walletsViewModelFactory;
-	WalletsViewModel viewModel;
+    WalletsViewModel viewModel;
 
-	private WalletsAdapter adapter;
+    private WalletsAdapter adapter;
 
-	private SystemView systemView;
+    private SystemView systemView;
     private BackupWarningView backupWarning;
     private Dialog dialog;
     private boolean isSetDefault;
     private final Handler handler = new Handler();
 
     @Override
-	protected void onCreate(@Nullable Bundle savedInstanceState) {
-		AndroidInjection.inject(this);
-		super.onCreate(savedInstanceState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_wallets);
-		// Init toolbar
-		toolbar();
+        setContentView(R.layout.activity_wallets);
+        // Init toolbar
+        toolbar();
 
-		adapter = new WalletsAdapter(this::onSetWalletDefault, this::onDeleteWallet, this::onExportWallet);
-		SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh_layout);
-		systemView = findViewById(R.id.system_view);
-		backupWarning = findViewById(R.id.backup_warning);
+        adapter = new WalletsAdapter(this::onSetWalletDefault, this::onDeleteWallet, this::onExportWallet);
+        SwipeRefreshLayout refreshLayout = findViewById(R.id.refresh_layout);
+        systemView = findViewById(R.id.system_view);
+        backupWarning = findViewById(R.id.backup_warning);
 
-		RecyclerView list = findViewById(R.id.list);
+        RecyclerView list = findViewById(R.id.list);
 
-		list.setLayoutManager(new LinearLayoutManager(this));
-		list.setAdapter(adapter);
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setAdapter(adapter);
 
-		systemView.attachRecyclerView(list);
-		systemView.attachSwipeRefreshLayout(refreshLayout);
-		backupWarning.setOnPositiveClickListener(this::onNowBackup);
-		backupWarning.setOnNegativeClickListener(this::onLaterBackup);
+        systemView.attachRecyclerView(list);
+        systemView.attachSwipeRefreshLayout(refreshLayout);
+        backupWarning.setOnPositiveClickListener(this::onNowBackup);
+        backupWarning.setOnNegativeClickListener(this::onLaterBackup);
 
-		viewModel = ViewModelProviders.of(this, walletsViewModelFactory)
-				.get(WalletsViewModel.class);
+        viewModel = ViewModelProviders.of(this, walletsViewModelFactory)
+                .get(WalletsViewModel.class);
 
-		viewModel.error().observe(this, this::onError);
-		viewModel.progress().observe(this, systemView::showProgress);
-		viewModel.wallets().observe(this, this::onFetchWallet);
-		viewModel.defaultWallet().observe(this, this::onChangeDefaultWallet);
-		viewModel.createdWallet().observe(this, this::onCreatedWallet);
-		viewModel.exportedStore().observe(this, this::openShareDialog);
+        viewModel.error().observe(this, this::onError);
+        viewModel.progress().observe(this, systemView::showProgress);
+        viewModel.wallets().observe(this, this::onFetchWallet);
+        viewModel.defaultWallet().observe(this, this::onChangeDefaultWallet);
+        viewModel.createdWallet().observe(this, this::onCreatedWallet);
+        viewModel.exportedStore().observe(this, this::openShareDialog);
 
-		refreshLayout.setOnRefreshListener(viewModel::fetchWallets);
-	}
+        refreshLayout.setOnRefreshListener(viewModel::fetchWallets);
+    }
 
     private void onExportWallet(Wallet wallet) {
         showBackupDialog(wallet, false);
     }
 
     @Override
-	protected void onPause() {
-		super.onPause();
+    protected void onPause() {
+        super.onPause();
 
-		hideDialog();
-	}
+        hideDialog();
+    }
 
-	@Override
-	public void onBackPressed() {
-		// User can't start work without wallet.
-		if (adapter.getItemCount() > 0) {
-			viewModel.showTransactions(this);
-		} else {
-			finish();
-			System.exit(0);
-		}
-	}
+    @Override
+    public void onBackPressed() {
+        // User can't start work without wallet.
+        if (adapter.getItemCount() > 0) {
+            viewModel.showTransactions(this);
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-	    if (adapter.getItemCount() > 0) {
+        if (adapter.getItemCount() > 0) {
             getMenuInflater().inflate(R.menu.menu_add, menu);
         }
         return super.onCreateOptionsMenu(menu);
@@ -121,10 +122,11 @@ public class WalletsActivity extends BaseActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_add: {
                 onAddWallet();
-            } break;
+            }
+            break;
             case android.R.id.home: {
                 onBackPressed();
                 return true;
@@ -134,12 +136,12 @@ public class WalletsActivity extends BaseActivity implements
     }
 
     @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == IMPORT_REQUEST_CODE) {
-			showToolbar();
-		    if (resultCode == RESULT_OK) {
+        if (requestCode == IMPORT_REQUEST_CODE) {
+            showToolbar();
+            if (resultCode == RESULT_OK) {
                 viewModel.fetchWallets();
                 Snackbar.make(systemView, getString(R.string.toast_message_wallet_imported), Snackbar.LENGTH_SHORT)
                         .show();
@@ -147,7 +149,7 @@ public class WalletsActivity extends BaseActivity implements
                     viewModel.showTransactions(this);
                 }
             }
-		} else if (requestCode == SHARE_REQUEST_CODE) {
+        } else if (requestCode == SHARE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Snackbar.make(systemView, getString(R.string.toast_message_wallet_exported), Snackbar.LENGTH_SHORT)
                         .show();
@@ -177,70 +179,91 @@ public class WalletsActivity extends BaseActivity implements
                 dialog.show();
             }
         }
-	}
+    }
 
-	@Override
-	public void onClick(View view) {
-		switch (view.getId()) {
-			case R.id.try_again: {
-				viewModel.fetchWallets();
-			} break;
-		}
-	}
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.try_again: {
+                viewModel.fetchWallets();
+            }
+            break;
+        }
+    }
 
-	@Override
-	public void onNewWallet(View view) {
-		hideDialog();
-		viewModel.newWallet();
-	}
+    @Override
+    public void onNewWallet(View view) {
+        hideDialog();
+        dissableDisplayHomeAsUp();
+        AttentionWalletView attentionWalletView = new AttentionWalletView(this);
+        attentionWalletView.setOnCopyPhraseClickListener(this);
+        attentionWalletView.setOnNextClickListener(this);
+        systemView.showEmpty(attentionWalletView);
+        hideToolbar();
+    }
 
-	@Override
-	public void onImportWallet(View view) {
-		hideDialog();
-		viewModel.importWallet(this);
-	}
+    @Override
+    public void onCopyPhrase(String phrase) {
+        viewModel.copyTrue();
+        Snackbar snackbar = Snackbar.make(systemView, getString(R.string.single_line), Snackbar.LENGTH_LONG);
+        snackbar.setAction(getString(R.string.action), v -> snackbar.dismiss());
+        snackbar.show();
 
-	private void onAddWallet() {
-		AddWalletView addWalletView = new AddWalletView(this);
-		addWalletView.setOnNewWalletClickListener(this);
-		addWalletView.setOnImportWalletClickListener(this);
-		dialog = new BottomSheetDialog(this);
-		dialog.setContentView(addWalletView);
-		dialog.setCancelable(true);
-		dialog.setCanceledOnTouchOutside(true);
-		dialog.show();
-	}
+    }
 
-	private void onChangeDefaultWallet(Wallet wallet) {
+    @Override
+    public void onNext(View view) {
+        hideDialog();
+        viewModel.newWallet();
+    }
+
+    @Override
+    public void onImportWallet(View view) {
+        hideDialog();
+        viewModel.importWallet(this);
+    }
+
+    private void onAddWallet() {
+        AddWalletView addWalletView = new AddWalletView(this);
+        addWalletView.setOnNewWalletClickListener(this);
+        addWalletView.setOnImportWalletClickListener(this);
+        dialog = new BottomSheetDialog(this);
+        dialog.setContentView(addWalletView);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+    }
+
+    private void onChangeDefaultWallet(Wallet wallet) {
         if (isSetDefault) {
             viewModel.showTransactions(this);
         } else {
             adapter.setDefaultWallet(wallet);
         }
-	}
+    }
 
-	private void onFetchWallet(Wallet[] wallets) {
-		if (wallets == null || wallets.length == 0) {
-			dissableDisplayHomeAsUp();
-			AddWalletView addWalletView = new AddWalletView(this, R.layout.ac_start);
-			addWalletView.setOnNewWalletClickListener(this);
-			addWalletView.setOnImportWalletClickListener(this);
-			systemView.showEmpty(addWalletView);
-			adapter.setWallets(new Wallet[0]);
+    private void onFetchWallet(Wallet[] wallets) {
+        if (wallets == null || wallets.length == 0) {
+            dissableDisplayHomeAsUp();
+            AddWalletView addWalletView = new AddWalletView(this, R.layout.ac_start);
+            addWalletView.setOnNewWalletClickListener(this);
+            addWalletView.setOnImportWalletClickListener(this);
+            systemView.showEmpty(addWalletView);
+            adapter.setWallets(new Wallet[0]);
             hideToolbar();
         } else {
-			enableDisplayHomeAsUp();
-			adapter.setWallets(wallets);
+            enableDisplayHomeAsUp();
+            adapter.setWallets(wallets);
         }
-		invalidateOptionsMenu();
-	}
+        invalidateOptionsMenu();
+    }
 
-	private void onCreatedWallet(Wallet wallet) {
+    private void onCreatedWallet(Wallet wallet) {
         hideToolbar();
         backupWarning.show(wallet);
-	}
+    }
 
-	private void onLaterBackup(View view, Wallet wallet) {
+    private void onLaterBackup(View view, Wallet wallet) {
         showNoBackupWarning(wallet);
     }
 
@@ -263,7 +286,7 @@ public class WalletsActivity extends BaseActivity implements
     }
 
     private void showBackupDialog(Wallet wallet, boolean isNew) {
-	    BackupView view = new BackupView(this);
+        BackupView view = new BackupView(this);
         dialog = buildDialog()
                 .setView(view)
                 .setPositiveButton(R.string.ok,
@@ -296,35 +319,36 @@ public class WalletsActivity extends BaseActivity implements
                 SHARE_REQUEST_CODE);
     }
 
-	private void onError(ErrorEnvelope errorEnvelope) {
-		systemView.showError(errorEnvelope.message, this);
-	}
-
-	private void onSetWalletDefault(Wallet wallet) {
-		viewModel.setDefaultWallet(wallet);
-		isSetDefault = true;
-	}
-
-	private void onDeleteWallet(Wallet wallet) {
-		dialog = buildDialog()
-				.setTitle(getString(R.string.title_delete_account))
-				.setMessage(getString(R.string.confirm_delete_account))
-				.setIcon(R.drawable.ic_warning_black_24dp)
-				.setPositiveButton(android.R.string.yes, (dialog, btn) -> viewModel.deleteWallet(wallet))
-				.setNegativeButton(android.R.string.no, null)
-				.create();
-		dialog.show();
-	}
-
-	private AlertDialog.Builder buildDialog() {
-	    hideDialog();
-	    return new AlertDialog.Builder(this);
+    private void onError(ErrorEnvelope errorEnvelope) {
+        systemView.showError(errorEnvelope.message, this);
     }
 
-	private void hideDialog() {
-		if (dialog != null && dialog.isShowing()) {
-			dialog.dismiss();
-			dialog = null;
-		}
-	}
+    private void onSetWalletDefault(Wallet wallet) {
+        viewModel.setDefaultWallet(wallet);
+        isSetDefault = true;
+    }
+
+    private void onDeleteWallet(Wallet wallet) {
+        dialog = buildDialog()
+                .setTitle(getString(R.string.title_delete_account))
+                .setMessage(getString(R.string.confirm_delete_account))
+                .setIcon(R.drawable.ic_warning_black_24dp)
+                .setPositiveButton(android.R.string.yes, (dialog, btn) -> viewModel.deleteWallet(wallet))
+                .setNegativeButton(android.R.string.no, null)
+                .create();
+        dialog.show();
+    }
+
+    private AlertDialog.Builder buildDialog() {
+        hideDialog();
+        return new AlertDialog.Builder(this);
+    }
+
+    private void hideDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
+
 }

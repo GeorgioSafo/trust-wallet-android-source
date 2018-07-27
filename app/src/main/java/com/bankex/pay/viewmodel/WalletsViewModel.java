@@ -38,6 +38,7 @@ public class WalletsViewModel extends BaseViewModel {
 	private final MutableLiveData<ErrorEnvelope> createWalletError = new MutableLiveData<>();
 	private final MutableLiveData<String> exportedStore = new MutableLiveData<>();
 	private final MutableLiveData<ErrorEnvelope> exportWalletError = new MutableLiveData<>();
+	private final MutableLiveData<Boolean> copyPhraseFlag = new MutableLiveData<>();
 
     WalletsViewModel(
             CreateWalletInteract createWalletInteract,
@@ -99,6 +100,10 @@ public class WalletsViewModel extends BaseViewModel {
 	private void onDefaultWalletChanged(Wallet wallet) {
 		progress.postValue(false);
 		defaultWallet.postValue(wallet);
+	}
+
+	public void copyTrue() {
+		copyPhraseFlag.setValue(true);
 	}
 
 	public void fetchWallets() {

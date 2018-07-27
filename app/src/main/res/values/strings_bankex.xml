@@ -26,7 +26,6 @@
     <string name="add_your_contacts">Add your contacts in the Favorite list for quick access to them</string>
     <string name="support_any_tokens">Support for any tokens within the Ether network</string>
     <string name="add_your_network">Add your network and work with tokens right inside wallet</string>
-    <string name="please_copy">Please, copy your passphrase to safe place</string>
 
     <string name="multi_line_">Multi-line text fields show all user input at once Overflow text causes the text</string>
     <string name="field_to_ex">field to expand shifting screen elements downward and text wraps</string>
@@ -49,6 +48,9 @@
     <string name="item_four">History</string>
     <string name="send">Send</string>
     <string name="receive">Receive</string>
+    <string name="please_copy">Please copy your passphrase to a safe place.\nThese words are the only way to restore your wallet</string>
+    <string name="single_line">Passphrase is copied to clipboard</string>
+    <string name="action">CLOSE</string>
 </resources>
 
 

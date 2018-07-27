@@ -2,15 +2,10 @@ package com.bankex.pay.widget;
 
 import android.content.Context;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bankex.pay.R;
 
@@ -38,12 +33,12 @@ public class AddWalletView extends FrameLayout implements View.OnClickListener {
 	@Override
 	public void onClick(View view) {
 		switch (view.getId()) {
-			case R.id.new_account_action: {
+			case R.id.createWallet: {
 				if (onNewWalletClickListener != null) {
 					onNewWalletClickListener.onNewWallet(view);
 				}
 			} break;
-			case R.id.import_account_action: {
+			case R.id.importWallet: {
 				if (onImportWalletClickListener != null) {
 					onImportWalletClickListener.onImportWallet(view);
 				}
