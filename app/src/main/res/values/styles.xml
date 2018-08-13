@@ -112,7 +112,7 @@
 
     <style name="MessageDialogBtn">
         <item name="android:layout_marginBottom">8dp</item>
-         <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:gravity">center</item>
         <item name="android:minHeight">36dp</item>
@@ -141,7 +141,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-<!--    <style name="private_key">
+    <!--    <style name="private_key">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/tab_text_selector</item>
     </style>-->
@@ -183,7 +183,7 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-<!--    <style name="tabsStyle">
+    <!--    <style name="tabsStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -206,7 +206,7 @@
         <item name="passwordToggleTint">@android:color/white</item>-->
     </style>
 
-<!--    <style name="import_buttons_style">
+    <!--    <style name="import_buttons_style">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -228,7 +228,7 @@
     </style>
 
 
-   <!-- <style name="BottomBarStyle">
+    <!-- <style name="BottomBarStyle">
         <item name="android:background">@color/white</item>
         <item name="bb_badgeBackgroundColor">@color/dodger_blue</item>
         <item name="bb_activeTabColor">@color/shark</item>
@@ -271,27 +271,18 @@
     </style>
 
     <style name="send">
-
-        <item name="android:textSize">
-            14sp
-        </item>
-
-        <item name="android:textColor">
-            #333333
-        </item>
-
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#333333</item>
     </style>
 
     <style name="wrong_order">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#F6CEDA</item>
+    </style>
 
-        <item name="android:textSize">
-            12sp
-        </item>
-
-        <item name="android:textColor">
-            #F6CEDA
-        </item>
-
+    <style name="create_wall">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#000000</item>
     </style>
 
 

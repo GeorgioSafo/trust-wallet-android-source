@@ -52,10 +52,8 @@
     <string name="single_line">Passphrase is copied to clipboard</string>
     <string name="action">CLOSE</string>
     <string name="please_repe">Please repeat the phrase by tapping the words in the right order</string>
-    <string name="wrong_order">
-
-Wrong order\nPlease try again
-</string>
+    <string name="wrong_order">Wrong order\nPlease try again</string>
+    <string name="create_wall">Create Wallet</string>
 </resources>
 
 

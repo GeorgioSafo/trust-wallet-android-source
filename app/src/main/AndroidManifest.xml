@@ -20,6 +20,7 @@
         <activity android:name=".ui.FirstActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -68,8 +69,11 @@
         <activity
             android:name=".ui.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.CreateWalletActivity"
+            android:label="@string/title_activity_craeate_wallet"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
     </application>
 
 </manifest>
