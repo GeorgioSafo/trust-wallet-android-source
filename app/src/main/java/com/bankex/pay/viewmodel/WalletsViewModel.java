@@ -5,7 +5,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 
-import com.crashlytics.android.Crashlytics;
 import com.bankex.pay.C;
 import com.bankex.pay.entity.ErrorEnvelope;
 import com.bankex.pay.entity.Wallet;
@@ -17,28 +16,31 @@ import com.bankex.pay.interact.FindDefaultWalletInteract;
 import com.bankex.pay.interact.SetDefaultWalletInteract;
 import com.bankex.pay.router.ImportWalletRouter;
 import com.bankex.pay.router.TransactionsRouter;
+import com.crashlytics.android.Crashlytics;
 
 import static com.bankex.pay.C.IMPORT_REQUEST_CODE;
 
 public class WalletsViewModel extends BaseViewModel {
 
-	private final CreateWalletInteract createWalletInteract;
-	private final SetDefaultWalletInteract setDefaultWalletInteract;
-	private final DeleteWalletInteract deleteWalletInteract;
-	private final FetchWalletsInteract fetchWalletsInteract;
-	private final FindDefaultWalletInteract findDefaultWalletInteract;
+    private final CreateWalletInteract createWalletInteract;
+    private final SetDefaultWalletInteract setDefaultWalletInteract;
+    private final DeleteWalletInteract deleteWalletInteract;
+    private final FetchWalletsInteract fetchWalletsInteract;
+    private final FindDefaultWalletInteract findDefaultWalletInteract;
     private final ExportWalletInteract exportWalletInteract;
 
-	private final ImportWalletRouter importWalletRouter;
+    private final ImportWalletRouter importWalletRouter;
     private final TransactionsRouter transactionsRouter;
 
-	private final MutableLiveData<Wallet[]> wallets = new MutableLiveData<>();
-	private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
-	private final MutableLiveData<Wallet> createdWallet = new MutableLiveData<>();
-	private final MutableLiveData<ErrorEnvelope> createWalletError = new MutableLiveData<>();
-	private final MutableLiveData<String> exportedStore = new MutableLiveData<>();
-	private final MutableLiveData<ErrorEnvelope> exportWalletError = new MutableLiveData<>();
-	private final MutableLiveData<Boolean> copyPhraseFlag = new MutableLiveData<>();
+    private final MutableLiveData<Wallet[]> wallets = new MutableLiveData<>();
+    private final MutableLiveData<Wallet> defaultWallet = new MutableLiveData<>();
+    private final MutableLiveData<Wallet> createdWallet = new MutableLiveData<>();
+    private final MutableLiveData<ErrorEnvelope> createWalletError = new MutableLiveData<>();
+    private final MutableLiveData<String> exportedStore = new MutableLiveData<>();
+    private final MutableLiveData<ErrorEnvelope> exportWalletError = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> copyPhraseFlag = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> startCreateFlag = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> attentionConfirmedFlag = new MutableLiveData<>();
 
     WalletsViewModel(
             CreateWalletInteract createWalletInteract,
@@ -49,79 +51,100 @@ public class WalletsViewModel extends BaseViewModel {
             ExportWalletInteract exportWalletInteract,
             ImportWalletRouter importWalletRouter,
             TransactionsRouter transactionsRouter) {
-		this.createWalletInteract = createWalletInteract;
-		this.setDefaultWalletInteract = setDefaultWalletInteract;
-		this.deleteWalletInteract = deleteWalletInteract;
-		this.fetchWalletsInteract = fetchWalletsInteract;
-		this.findDefaultWalletInteract = findDefaultWalletInteract;
-		this.importWalletRouter = importWalletRouter;
-		this.exportWalletInteract = exportWalletInteract;
-		this.transactionsRouter = transactionsRouter;
+        this.createWalletInteract = createWalletInteract;
+        this.setDefaultWalletInteract = setDefaultWalletInteract;
+        this.deleteWalletInteract = deleteWalletInteract;
+        this.fetchWalletsInteract = fetchWalletsInteract;
+        this.findDefaultWalletInteract = findDefaultWalletInteract;
+        this.importWalletRouter = importWalletRouter;
+        this.exportWalletInteract = exportWalletInteract;
+        this.transactionsRouter = transactionsRouter;
 
-		fetchWallets();
-	}
+        fetchWallets();
+    }
 
-	public LiveData<Wallet[]> wallets() {
-		return wallets;
-	}
+    public LiveData<Wallet[]> wallets() {
+        return wallets;
+    }
 
-	public LiveData<Wallet> defaultWallet() {
-		return defaultWallet;
-	}
+    public LiveData<Wallet> defaultWallet() {
+        return defaultWallet;
+    }
 
     public LiveData<Wallet> createdWallet() {
         return createdWallet;
+    }
+
+    public MutableLiveData<Boolean> copyPhraseFlag() {
+        return copyPhraseFlag;
+    }
+
+    public MutableLiveData<Boolean> startCreateFlag() {
+        return startCreateFlag;
+    }
+
+    public MutableLiveData<Boolean> attentionConfirmedFlag() {
+        return attentionConfirmedFlag;
     }
 
     public LiveData<String> exportedStore() {
         return exportedStore;
     }
 
-	public void setDefaultWallet(Wallet wallet) {
-		disposable = setDefaultWalletInteract
-				.set(wallet)
-				.subscribe(() -> onDefaultWalletChanged(wallet), this::onError);
-	}
+    public void setDefaultWallet(Wallet wallet) {
+        disposable = setDefaultWalletInteract
+                .set(wallet)
+                .subscribe(() -> onDefaultWalletChanged(wallet), this::onError);
+    }
 
-	public void deleteWallet(Wallet wallet) {
-		disposable = deleteWalletInteract
-				.delete(wallet)
-				.subscribe(this::onFetchWallets, this::onError);
-	}
+    public void deleteWallet(Wallet wallet) {
+        disposable = deleteWalletInteract
+                .delete(wallet)
+                .subscribe(this::onFetchWallets, this::onError);
+    }
 
-	private void onFetchWallets(Wallet[] items) {
-		progress.postValue(false);
-		wallets.postValue(items);
-		disposable = findDefaultWalletInteract
-				.find()
-				.subscribe(this::onDefaultWalletChanged, t -> {});
-	}
+    private void onFetchWallets(Wallet[] items) {
+        progress.postValue(false);
+        wallets.postValue(items);
+        disposable = findDefaultWalletInteract
+                .find()
+                .subscribe(this::onDefaultWalletChanged, t -> {
+                });
+    }
 
-	private void onDefaultWalletChanged(Wallet wallet) {
-		progress.postValue(false);
-		defaultWallet.postValue(wallet);
-	}
+    private void onDefaultWalletChanged(Wallet wallet) {
+        progress.postValue(false);
+        defaultWallet.postValue(wallet);
+    }
 
-	public void copyTrue() {
-		copyPhraseFlag.setValue(true);
-	}
+    public void copyTrue() {
+        copyPhraseFlag.setValue(true);
+    }
 
-	public void fetchWallets() {
-		progress.postValue(true);
-		disposable = fetchWalletsInteract
-				.fetch()
-				.subscribe(this::onFetchWallets, this::onError);
-	}
+    public void startCreate() {
+        startCreateFlag.setValue(true);
+    }
 
-	public void newWallet() {
-		progress.setValue(true);
-		createWalletInteract
-				.create()
-				.subscribe(account -> {
-					fetchWallets();
-					createdWallet.postValue(account);
-				}, this::onCreateWalletError);
-	}
+    public void confirmAttention() {
+        attentionConfirmedFlag.setValue(true);
+    }
+
+    public void fetchWallets() {
+        progress.postValue(true);
+        disposable = fetchWalletsInteract
+                .fetch()
+                .subscribe(this::onFetchWallets, this::onError);
+    }
+
+    public void newWallet() {
+        progress.setValue(true);
+        createWalletInteract
+                .create()
+                .subscribe(account -> {
+                    fetchWallets();
+                    createdWallet.postValue(account);
+                }, this::onCreateWalletError);
+    }
 
     public void exportWallet(Wallet wallet, String storePassword) {
         exportWalletInteract
@@ -137,11 +160,11 @@ public class WalletsViewModel extends BaseViewModel {
     private void onCreateWalletError(Throwable throwable) {
         Crashlytics.logException(throwable);
         createWalletError.postValue(new ErrorEnvelope(C.ErrorCode.UNKNOWN, null));
-	}
+    }
 
-	public void importWallet(Activity activity) {
-		importWalletRouter.openForResult(activity, IMPORT_REQUEST_CODE);
-	}
+    public void importWallet(Activity activity) {
+        importWalletRouter.openForResult(activity, IMPORT_REQUEST_CODE);
+    }
 
     public void showTransactions(Context context) {
         transactionsRouter.open(context, true);

@@ -21,12 +21,12 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
-			android:layout_margin="10dp"
+			android:gravity="center"
 			android:layout_marginLeft="41dp"
 			android:layout_marginRight="41dp"
 			android:text="@string/please_copy"
 			android:textColor="@color/black"
-			android:textSize="14sp" />
+			android:textSize="12sp" />
 	</LinearLayout>
 
 

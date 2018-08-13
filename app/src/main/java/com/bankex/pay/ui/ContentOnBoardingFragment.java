@@ -18,7 +18,7 @@ import butterknife.Unbinder;
  * @author Denis Anisimov.
  */
 public class ContentOnBoardingFragment extends Fragment {
-    public Unbinder mUnbinder;
+    public Unbinder unbinder;
 
     public final static String ARG_ID = "param_id";
     public final static String ARG_TITLE = "param_title";
@@ -42,28 +42,28 @@ public class ContentOnBoardingFragment extends Fragment {
         return contentOnBoardingFragment;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fr_content_onboarding, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
+        final View view = inflater.inflate(R.layout.fragment_content_onboarding, container, false);
+        unbinder = ButterKnife.bind(this, view);
         imageOnboarding = view.findViewById(R.id.imageOnboarding);
         titleOnboarding = view.findViewById(R.id.titleOnboarding);
         descOnboarding = view.findViewById(R.id.descOnboarding);
         return view;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        if (arguments == null) return;
+        if (arguments == null) {
+            getActivity().finish();
+            return;
+        }
         paramID = arguments.getInt(ARG_ID);
         paramTitle = arguments.getInt(ARG_TITLE);
         paramDesc = arguments.getInt(ARG_DESC);
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -72,5 +72,4 @@ public class ContentOnBoardingFragment extends Fragment {
         titleOnboarding.setText(paramTitle);
         descOnboarding.setText(paramDesc);
     }
-
 }

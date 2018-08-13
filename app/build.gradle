@@ -109,7 +109,10 @@ dependencies {
     // if you are not using support library, include this instead
     implementation "com.google.dagger:dagger-android:$project.daggerVersion"
 
+    //CreateWalletLibs
     implementation 'com.github.blocoio:faker:1.0.1'
+    implementation 'com.hootsuite.android:nachos:1.1.1'
+    implementation 'com.github.Plumillon:ChipView:1.2.0'
     // Tests
     testImplementation "junit:junit:4.12"
     androidTestImplementation("com.android.support.test.espresso:espresso-core:2.2.2", {

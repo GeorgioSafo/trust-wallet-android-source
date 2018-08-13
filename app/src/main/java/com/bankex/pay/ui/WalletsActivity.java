@@ -2,6 +2,7 @@ package com.bankex.pay.ui;
 
 import android.app.Dialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import com.bankex.pay.widget.AddWalletView;
 import com.bankex.pay.widget.AttentionWalletView;
 import com.bankex.pay.widget.BackupView;
 import com.bankex.pay.widget.BackupWarningView;
+import com.bankex.pay.widget.EnterPassPhraseView;
 import com.bankex.pay.widget.SystemView;
 
 import javax.inject.Inject;
@@ -39,7 +41,7 @@ import static com.bankex.pay.C.SHARE_REQUEST_CODE;
 public class WalletsActivity extends BaseActivity implements
         View.OnClickListener,
         AddWalletView.OnNewWalletClickListener,
-        AddWalletView.OnImportWalletClickListener, AttentionWalletView.OnCopyPhraseClickListener, AttentionWalletView.OnNextClickListener {
+        AddWalletView.OnImportWalletClickListener, AttentionWalletView.OnCopyPhraseClickListener, AttentionWalletView.OnNextClickListener, EnterPassPhraseView.OnNextClickListener {
 
     @Inject
     WalletsViewModelFactory walletsViewModelFactory;
@@ -52,6 +54,7 @@ public class WalletsActivity extends BaseActivity implements
     private Dialog dialog;
     private boolean isSetDefault;
     private final Handler handler = new Handler();
+    private AttentionWalletView mAttentionWalletView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,12 +85,41 @@ public class WalletsActivity extends BaseActivity implements
 
         viewModel.error().observe(this, this::onError);
         viewModel.progress().observe(this, systemView::showProgress);
+
         viewModel.wallets().observe(this, this::onFetchWallet);
         viewModel.defaultWallet().observe(this, this::onChangeDefaultWallet);
         viewModel.createdWallet().observe(this, this::onCreatedWallet);
         viewModel.exportedStore().observe(this, this::openShareDialog);
+        viewModel.startCreateFlag().observe(this, this::creatingStarted);
 
         refreshLayout.setOnRefreshListener(viewModel::fetchWallets);
+    }
+
+    private void creatingStarted(Boolean started) {
+      /*  if (!started) {
+            viewModel.wallets().observe(this, this::onFetchWallet);
+            viewModel.defaultWallet().observe(this, this::onChangeDefaultWallet);
+            viewModel.createdWallet().observe(this, this::onCreatedWallet);
+            viewModel.exportedStore().observe(this, this::openShareDialog);
+        } else {
+            viewModel.attentionConfirmedFlag().observe(this, this::attentionConfirmed);
+        }*/
+    }
+
+    private void attentionConfirmed(Boolean confirmed) {
+      /*  hideDialog();
+        dissableDisplayHomeAsUp();
+        View view = null;
+        if (confirmed) {
+            //EnterPassPhraseView enterPassPhraseView = new EnterPassPhraseView(this, passphrase);
+            //enterPassPhraseView.setOnNextClickListener(this);
+        } else {
+            view = new AttentionWalletView(this);
+            ((AttentionWalletView) view).setOnCopyPhraseClickListener(this);
+            ((AttentionWalletView) view).setOnNextClickListener(this);
+        }
+        systemView.showEmpty(view);
+        hideToolbar();*/
     }
 
     private void onExportWallet(Wallet wallet) {
@@ -195,10 +227,10 @@ public class WalletsActivity extends BaseActivity implements
     public void onNewWallet(View view) {
         hideDialog();
         dissableDisplayHomeAsUp();
-        AttentionWalletView attentionWalletView = new AttentionWalletView(this);
-        attentionWalletView.setOnCopyPhraseClickListener(this);
-        attentionWalletView.setOnNextClickListener(this);
-        systemView.showEmpty(attentionWalletView);
+        mAttentionWalletView = new AttentionWalletView(this);
+        mAttentionWalletView.setOnCopyPhraseClickListener(this);
+        mAttentionWalletView.setOnNextClickListener(this);
+        systemView.showEmpty(mAttentionWalletView);
         hideToolbar();
     }
 
@@ -208,13 +240,19 @@ public class WalletsActivity extends BaseActivity implements
         Snackbar snackbar = Snackbar.make(systemView, getString(R.string.single_line), Snackbar.LENGTH_LONG);
         snackbar.setAction(getString(R.string.action), v -> snackbar.dismiss());
         snackbar.show();
-
+        android.content.ClipboardManager c = (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        c.setPrimaryClip(ClipData.newPlainText(phrase, phrase));
+        if (mAttentionWalletView != null) mAttentionWalletView.setEnabledNext();
     }
 
     @Override
-    public void onNext(View view) {
+    public void onNext(String passphrase) {
         hideDialog();
-        viewModel.newWallet();
+        dissableDisplayHomeAsUp();
+        EnterPassPhraseView enterPassPhraseView = new EnterPassPhraseView(this, passphrase);
+        enterPassPhraseView.setOnNextClickListener(this);
+        systemView.showEmpty(enterPassPhraseView);
+        hideToolbar();
     }
 
     @Override
@@ -319,6 +357,7 @@ public class WalletsActivity extends BaseActivity implements
                 SHARE_REQUEST_CODE);
     }
 
+
     private void onError(ErrorEnvelope errorEnvelope) {
         systemView.showError(errorEnvelope.message, this);
     }
@@ -351,4 +390,9 @@ public class WalletsActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public void onConfirmed(View view) {
+        hideDialog();
+        viewModel.newWallet();
+    }
 }

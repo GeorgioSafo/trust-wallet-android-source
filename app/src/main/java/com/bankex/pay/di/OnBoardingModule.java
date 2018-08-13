@@ -1,14 +1,10 @@
 package com.bankex.pay.di;
 
-import android.content.Context;
-
+import com.bankex.pay.interact.FetchOnboardingSettingsInteract;
 import com.bankex.pay.interact.FetchWalletsInteract;
 import com.bankex.pay.repository.PreferenceRepositoryType;
-import com.bankex.pay.repository.SharedPreferenceRepository;
 import com.bankex.pay.repository.WalletRepositoryType;
 import com.bankex.pay.viewmodel.SplashViewModelFactory;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -17,12 +13,12 @@ import dagger.Provides;
 public class OnBoardingModule {
 
     @Provides
-    SplashViewModelFactory provideSplashViewModelFactory(FetchWalletsInteract fetchWalletsInteract) {
-        return new SplashViewModelFactory(fetchWalletsInteract);
+    SplashViewModelFactory provideSplashViewModelFactory(FetchWalletsInteract fetchWalletsInteract, FetchOnboardingSettingsInteract fetchOnboardingSettingsInteract) {
+        return new SplashViewModelFactory(fetchWalletsInteract, fetchOnboardingSettingsInteract);
     }
 
     @Provides
-    FetchWalletsInteract provideFetchWalletInteract(WalletRepositoryType walletRepository) {
+    FetchWalletsInteract provideFetchOnboardingSettingsInteract(WalletRepositoryType walletRepository) {
         return new FetchWalletsInteract(walletRepository);
     }
 }

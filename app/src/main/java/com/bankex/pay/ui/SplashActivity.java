@@ -28,9 +28,6 @@ public class SplashActivity extends AppCompatActivity {
     SplashViewModelFactory splashViewModelFactory;
     SplashViewModel splashViewModel;
 
-    @Inject
-    PreferenceRepositoryType preferences;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.ac_splash);
         Fabric.with(this, new Crashlytics.Builder()
                 .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build()).build());
-        if (preferences.getOnBoardingFlag()) {
+        if (splashViewModel.getOnboardingFlag()) {
             splashViewModel = ViewModelProviders.of(this, splashViewModelFactory)
                     .get(SplashViewModel.class);
             splashViewModel.wallets().observe(this, this::onWallets);

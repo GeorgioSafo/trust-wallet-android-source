@@ -25,7 +25,7 @@ public abstract class BuildersModule {
 	abstract FirstActivity bindSplashModule();
 
 	@ActivityScope
-	@ContributesAndroidInjector(modules = OnBoardingModule.class)
+	@ContributesAndroidInjector(modules = SplashModule.class)
 	abstract OnBoardingActivity bindOnboardingModule();
 
 	@ActivityScope

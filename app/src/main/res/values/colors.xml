@@ -35,4 +35,7 @@
 	<color name="whisper">#f5f5fa</color>
 	<color name="athens_gray">#edecf1</color>
 	<color name="athens_gray_1">#e8e8ed</color>
+	<color name="chip_color">
+		#A4A4A4
+	</color>
 </resources>

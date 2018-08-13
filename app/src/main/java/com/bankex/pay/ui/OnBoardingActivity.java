@@ -37,8 +37,24 @@ public class OnBoardingActivity extends AppCompatActivity {
     SplashViewModelFactory splashViewModelFactory;
     SplashViewModel splashViewModel;
 
-    @Inject
-    PreferenceRepositoryType preferences;
+    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            pageIndicatorView.setSelection(position);
+            if (position == 2) changeLabel();
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,25 +88,6 @@ public class OnBoardingActivity extends AppCompatActivity {
         }
     }
 
-    private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            pageIndicatorView.setSelection(position);
-            if (position == 2) changeLabel();
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-
-    };
-
     private void changeLabel() {
         pageButton.setText(R.string.btn_start);
     }
@@ -121,7 +118,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     }
 
     private void finishOnboarding() {
-        preferences.setCurrentOnBoardingFlag(new Boolean(true));
+        splashViewModel.onSetOnboardingTrue();
         splashViewModel = ViewModelProviders.of(this, splashViewModelFactory)
                 .get(SplashViewModel.class);
         splashViewModel.wallets().observe(this, this::onWallets);
