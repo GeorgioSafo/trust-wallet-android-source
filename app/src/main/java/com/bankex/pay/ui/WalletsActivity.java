@@ -73,8 +73,8 @@ public class WalletsActivity extends BaseActivity implements
 
         systemView.attachRecyclerView(list);
         systemView.attachSwipeRefreshLayout(refreshLayout);
-        backupWarning.setOnPositiveClickListener(this::onNowBackup);
-        backupWarning.setOnNegativeClickListener(this::onLaterBackup);
+/*        backupWarning.setOnPositiveClickListener(this::onNowBackup);
+        backupWarning.setOnNegativeClickListener(this::onLaterBackup);*/
 
         viewModel = ViewModelProviders.of(this, walletsViewModelFactory)
                 .get(WalletsViewModel.class);
@@ -98,19 +98,13 @@ public class WalletsActivity extends BaseActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-
         hideDialog();
     }
 
     @Override
     public void onBackPressed() {
         // User can't start work without wallet.
-        viewModel.startCreateFlag().observe(this, this::creatingStarted);
-    }
-
-    private void creatingStarted(Boolean started) {
-        if (started) hideToolbar();
-        else if (adapter.getItemCount() > 0) {
+        if (adapter.getItemCount() > 0) {
             viewModel.showTransactions(this);
         } else {
             finish();
@@ -146,8 +140,8 @@ public class WalletsActivity extends BaseActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == IMPORT_REQUEST_CODE) {
-            showToolbar();
             if (resultCode == RESULT_OK) {
+                showToolbar();
                 viewModel.fetchWallets();
                 Snackbar.make(systemView, getString(R.string.toast_message_wallet_imported), Snackbar.LENGTH_SHORT)
                         .show();
@@ -248,7 +242,7 @@ public class WalletsActivity extends BaseActivity implements
         hideToolbar();
         backupWarning.show(wallet);
     }
-
+/*
     private void onLaterBackup(View view, Wallet wallet) {
         showNoBackupWarning(wallet);
     }
@@ -269,7 +263,7 @@ public class WalletsActivity extends BaseActivity implements
                 .setNegativeButton(android.R.string.cancel, null) //(dialog, whichButton) -> showBackupDialog(wallet, true)
                 .create();
         dialog.show();
-    }
+    }*/
 
     private void showBackupDialog(Wallet wallet, boolean isNew) {
         BackupView view = new BackupView(this);

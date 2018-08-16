@@ -67,8 +67,15 @@
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
-        <item name="tabTextAppearance">@style/TabDarkTextAppearance</item>
-        <item name="tabSelectedTextColor">@android:color/white</item>
+        <item name="tabTextAppearance">@style/BankexTextAppearance</item>
+        <item name="textAllCaps">true</item>
+        <item name="tabSelectedTextColor">#0DA9FF</item>
+    </style>
+
+    <style name="BankexTextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#A4A4A4</item>
+        <item name="textAllCaps">true</item>
     </style>
 
     <style name="TabDarkTextAppearance" parent="TextAppearance.Design.Tab">
@@ -322,6 +329,8 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#0DA9FF</item>
     </style>
+
+
 
 
 </resources>

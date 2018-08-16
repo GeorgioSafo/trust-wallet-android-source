@@ -48,8 +48,8 @@ public class EnterPassPhraseView extends FrameLayout implements View.OnClickList
         chipRandom = new ArrayList<>();
         chipRandom.addAll(chips);
         Collections.shuffle(chipRandom);
-        chipsOriginalTV.setChipLayoutRes(R.layout.w_chip1);
-        chipsTV.setChipLayoutRes(R.layout.w_chip1);
+        chipsOriginalTV.setChipLayoutRes(R.layout.w_chip);
+        chipsTV.setChipLayoutRes(R.layout.w_chip);
       /*  chipsTV.setAdapter(new ChipViewAdapter(getContext()) {
 
             @Override

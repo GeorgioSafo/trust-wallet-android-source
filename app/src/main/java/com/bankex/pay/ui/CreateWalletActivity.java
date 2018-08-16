@@ -10,20 +10,16 @@ import com.bankex.pay.util.FragmentUtils;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public class CreateWalletActivity extends DaggerAppCompatActivity implements AttentionCreateWalletFragment.OnNextClickListener, ConfirmationCreateWalletFragment.ConfirmationListener {
-    private String phrase;
 
-/*    @Inject
-    WalletsViewModelFactory walletsViewModelFactory;*/
+    private String phrase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // AndroidInjection.inject(this);
-        setContentView(R.layout.activity_craeate_wallet);
+        setContentView(R.layout.activity_create_wallet);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle(R.string.create_wall);
-       // getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         AttentionCreateWalletFragment fragment = AttentionCreateWalletFragment.newInstance();
         fragment.setOnNextListener(this);

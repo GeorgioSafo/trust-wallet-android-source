@@ -53,6 +53,7 @@ public class WalletCreatedActivity extends AppCompatActivity implements View.OnC
         walletAddress = findViewById(R.id.wallet_addr_content);
         walletName = findViewById(R.id.eth_wallet_);
         edit.setOnClickListener(this);
+        next.setOnClickListener(this);
     }
 
     @Override
