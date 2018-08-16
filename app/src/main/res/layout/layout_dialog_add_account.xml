@@ -9,7 +9,7 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="center|top"
 		android:orientation="vertical"
-		android:layout_marginTop="54dp">
+		android:layout_marginTop="74dp">
 		<ImageView
 			android:layout_width="96dp"
 			android:layout_height="80dp"
@@ -22,6 +22,7 @@
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:gravity="center"
+			android:layout_marginTop="30dp"
 			android:layout_marginLeft="41dp"
 			android:layout_marginRight="41dp"
 			android:text="@string/please_copy"

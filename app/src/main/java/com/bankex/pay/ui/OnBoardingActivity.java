@@ -118,9 +118,9 @@ public class OnBoardingActivity extends AppCompatActivity {
     }
 
     private void finishOnboarding() {
-        splashViewModel.onSetOnboardingTrue();
         splashViewModel = ViewModelProviders.of(this, splashViewModelFactory)
                 .get(SplashViewModel.class);
+        splashViewModel.onSetOnboardingTrue();
         splashViewModel.wallets().observe(this, this::onWallets);
     }
 

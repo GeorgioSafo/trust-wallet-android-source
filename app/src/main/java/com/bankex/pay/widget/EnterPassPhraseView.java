@@ -88,7 +88,7 @@ public class EnterPassPhraseView extends FrameLayout implements View.OnClickList
             chipsTV.refresh();
             chipsOriginalTV.remove(chip);
             if (chipsOriginalTV.getChipList().size() == 0)
-                wrongOrder.setVisibility(VISIBLE);
+                next.setEnabled(true);
         /*    PhraseUtils.Tag chip1 = (PhraseUtils.Tag) chip;
             //int position = chip1.getPosition();
             int count = chipsTV.getAdapter().count();
@@ -106,7 +106,7 @@ public class EnterPassPhraseView extends FrameLayout implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.next: {
-                if (mOnNextClickListener != null && confirm()) {
+                if (mOnNextClickListener != null) {
                     mOnNextClickListener.onConfirmed(view);
                 } else wrongOrder.setEnabled(true);
             }

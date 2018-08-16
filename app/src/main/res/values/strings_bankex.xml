@@ -54,6 +54,14 @@
     <string name="please_repe">Please repeat the phrase by tapping the words in the right order</string>
     <string name="wrong_order">Wrong order\nPlease try again</string>
     <string name="create_wall">Create Wallet</string>
+    <string name="finish">Finish</string>
+    <string name="wallet_crea">Wallet Created!</string>
+    <string name="wallet_name">Wallet Name</string>
+    <string name="wallet_addr">Wallet Address</string>
+    <string name="eth_wallet_">ETH Wallet Name</string>
+    <string name="edit">EDIT</string>
+    <string name="xde0b295669">0xde0b295669a9fd93d5f28d9ec85e40f4cb697bae</string>
+    <string name="papi_pacify">Edit Your Wallet Name</string>
 </resources>
 
 

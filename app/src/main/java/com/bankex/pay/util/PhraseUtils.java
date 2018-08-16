@@ -1,6 +1,5 @@
 package com.bankex.pay.util;
 
-import com.hootsuite.nachos.chip.ChipInfo;
 import com.plumillonforge.android.chipview.Chip;
 
 import java.text.BreakIterator;
@@ -12,21 +11,6 @@ import java.util.Random;
  * @author Denis Anisimov.
  */
 public class PhraseUtils {
-    public static List<ChipInfo> getWords(String text) {
-        List<ChipInfo> words = new ArrayList<ChipInfo>();
-        BreakIterator breakIterator = BreakIterator.getWordInstance();
-        breakIterator.setText(text);
-        int lastIndex = breakIterator.first();
-        while (BreakIterator.DONE != lastIndex) {
-            int firstIndex = lastIndex;
-            lastIndex = breakIterator.next();
-            if (lastIndex != BreakIterator.DONE && Character.isLetterOrDigit(text.charAt(firstIndex))) {
-                String substring = text.substring(firstIndex, lastIndex);
-                words.add(new ChipInfo(substring, null));
-            }
-        }
-        return words;
-    }
 
     public static List<Chip> getChips(String text) {
         List<Chip> words = new ArrayList<Chip>();

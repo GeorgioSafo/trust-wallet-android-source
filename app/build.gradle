@@ -21,7 +21,7 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.bankex.pay"
-        minSdkVersion 18
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 37
         versionName "1.4.2"
@@ -111,7 +111,6 @@ dependencies {
 
     //CreateWalletLibs
     implementation 'com.github.blocoio:faker:1.0.1'
-    implementation 'com.hootsuite.android:nachos:1.1.1'
     implementation 'com.github.Plumillon:ChipView:1.2.0'
     // Tests
     testImplementation "junit:junit:4.12"

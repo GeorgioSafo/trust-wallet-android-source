@@ -2,6 +2,7 @@ package com.bankex.pay.di;
 
 import android.content.Context;
 
+import com.bankex.pay.repository.RealmWalletSource;
 import com.google.gson.Gson;
 import com.bankex.pay.repository.EthereumNetworkRepository;
 import com.bankex.pay.repository.EthereumNetworkRepositoryType;
@@ -123,5 +124,11 @@ public class RepositoriesModule {
     @Provides
     TokenLocalSource provideRealmTokenSource() {
 	    return new RealmTokenSource();
+    }
+
+    @Singleton
+    @Provides
+	RealmWalletSource provideRealmWalletSource() {
+	    return new RealmWalletSource();
     }
 }

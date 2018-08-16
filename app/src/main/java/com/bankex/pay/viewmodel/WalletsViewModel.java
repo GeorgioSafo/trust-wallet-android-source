@@ -14,8 +14,10 @@ import com.bankex.pay.interact.ExportWalletInteract;
 import com.bankex.pay.interact.FetchWalletsInteract;
 import com.bankex.pay.interact.FindDefaultWalletInteract;
 import com.bankex.pay.interact.SetDefaultWalletInteract;
+import com.bankex.pay.router.CreateWalletRouter;
 import com.bankex.pay.router.ImportWalletRouter;
 import com.bankex.pay.router.TransactionsRouter;
+import com.bankex.pay.ui.CreateWalletActivity;
 import com.crashlytics.android.Crashlytics;
 
 import static com.bankex.pay.C.IMPORT_REQUEST_CODE;
@@ -30,6 +32,7 @@ public class WalletsViewModel extends BaseViewModel {
     private final ExportWalletInteract exportWalletInteract;
 
     private final ImportWalletRouter importWalletRouter;
+    private final CreateWalletRouter createWalletRouter;
     private final TransactionsRouter transactionsRouter;
 
     private final MutableLiveData<Wallet[]> wallets = new MutableLiveData<>();
@@ -50,6 +53,7 @@ public class WalletsViewModel extends BaseViewModel {
             FindDefaultWalletInteract findDefaultWalletInteract,
             ExportWalletInteract exportWalletInteract,
             ImportWalletRouter importWalletRouter,
+            CreateWalletRouter createWalletRouter,
             TransactionsRouter transactionsRouter) {
         this.createWalletInteract = createWalletInteract;
         this.setDefaultWalletInteract = setDefaultWalletInteract;
@@ -57,6 +61,7 @@ public class WalletsViewModel extends BaseViewModel {
         this.fetchWalletsInteract = fetchWalletsInteract;
         this.findDefaultWalletInteract = findDefaultWalletInteract;
         this.importWalletRouter = importWalletRouter;
+        this.createWalletRouter = createWalletRouter;
         this.exportWalletInteract = exportWalletInteract;
         this.transactionsRouter = transactionsRouter;
 
@@ -136,10 +141,10 @@ public class WalletsViewModel extends BaseViewModel {
                 .subscribe(this::onFetchWallets, this::onError);
     }
 
-    public void newWallet() {
+    public void newWallet(String password) {
         progress.setValue(true);
         createWalletInteract
-                .create()
+                .create(password)
                 .subscribe(account -> {
                     fetchWallets();
                     createdWallet.postValue(account);
@@ -164,6 +169,10 @@ public class WalletsViewModel extends BaseViewModel {
 
     public void importWallet(Activity activity) {
         importWalletRouter.openForResult(activity, IMPORT_REQUEST_CODE);
+    }
+
+    public void createWallet(Activity activity) {
+        createWalletRouter.open(activity);
     }
 
     public void showTransactions(Context context) {

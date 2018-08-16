@@ -1,25 +1,46 @@
 package com.bankex.pay.ui;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.bankex.pay.R;
+import com.bankex.pay.router.WalletCreatedRouter;
+import com.bankex.pay.util.FragmentUtils;
 
-public class CreateWalletActivity extends AppCompatActivity {
+import dagger.android.support.DaggerAppCompatActivity;
+
+public class CreateWalletActivity extends DaggerAppCompatActivity implements AttentionCreateWalletFragment.OnNextClickListener, ConfirmationCreateWalletFragment.ConfirmationListener {
+    private String phrase;
+
+/*    @Inject
+    WalletsViewModelFactory walletsViewModelFactory;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // AndroidInjection.inject(this);
         setContentView(R.layout.activity_craeate_wallet);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         setTitle(R.string.create_wall);
-
+       // getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        AttentionCreateWalletFragment fragment = AttentionCreateWalletFragment.newInstance();
+        fragment.setOnNextListener(this);
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), fragment);
     }
 
+
+    @Override
+    public void onNext(String phrase) {
+        this.phrase = phrase;
+        ConfirmationCreateWalletFragment fragment = ConfirmationCreateWalletFragment.newInstance(phrase);
+        fragment.setOnConfirmListener(this);
+        FragmentUtils.replaceFragment(getSupportFragmentManager(), fragment);
+    }
+
+    @Override
+    public void onConfirm() {
+        new WalletCreatedRouter().open(this, phrase);
+    }
 }

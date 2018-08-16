@@ -10,6 +10,7 @@ import com.bankex.pay.interact.ExportWalletInteract;
 import com.bankex.pay.interact.FetchWalletsInteract;
 import com.bankex.pay.interact.FindDefaultWalletInteract;
 import com.bankex.pay.interact.SetDefaultWalletInteract;
+import com.bankex.pay.router.CreateWalletRouter;
 import com.bankex.pay.router.ImportWalletRouter;
 import com.bankex.pay.router.TransactionsRouter;
 
@@ -25,6 +26,7 @@ public class WalletsViewModelFactory implements ViewModelProvider.Factory {
     private final ExportWalletInteract exportWalletInteract;
 
 	private final ImportWalletRouter importWalletRouter;
+	private final CreateWalletRouter createWalletRouter;
     private final TransactionsRouter transactionsRouter;
 
 
@@ -37,6 +39,7 @@ public class WalletsViewModelFactory implements ViewModelProvider.Factory {
             FindDefaultWalletInteract findDefaultWalletInteract,
             ExportWalletInteract exportWalletInteract,
             ImportWalletRouter importWalletRouter,
+            CreateWalletRouter createWalletRouter,
             TransactionsRouter transactionsRouter) {
 		this.createWalletInteract = createWalletInteract;
 		this.setDefaultWalletInteract = setDefaultWalletInteract;
@@ -45,6 +48,7 @@ public class WalletsViewModelFactory implements ViewModelProvider.Factory {
 		this.findDefaultWalletInteract = findDefaultWalletInteract;
 		this.exportWalletInteract = exportWalletInteract;
 		this.importWalletRouter = importWalletRouter;
+		this.createWalletRouter = createWalletRouter;
 		this.transactionsRouter = transactionsRouter;
 	}
 
@@ -59,6 +63,7 @@ public class WalletsViewModelFactory implements ViewModelProvider.Factory {
                 findDefaultWalletInteract,
                 exportWalletInteract,
                 importWalletRouter,
+                createWalletRouter,
                 transactionsRouter);
 	}
 }

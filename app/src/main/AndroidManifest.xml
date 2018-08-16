@@ -26,40 +26,52 @@
         </activity>
         <activity
             android:name=".ui.WalletsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_account_list" />
         <activity
             android:name=".ui.ImportWalletActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_import"
             android:windowSoftInputMode="stateAlwaysVisible|adjustResize" />
         <activity
             android:name=".ui.TransactionsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_import" />
         <activity
             android:name=".ui.SettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_settings" />
         <activity
             android:name=".ui.TransactionDetailActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_transaction_details" />
         <activity
             android:name=".ui.MyAddressActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_my_address" />
         <activity
             android:name=".ui.TokensActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_my_tokens" />
         <activity
             android:name=".ui.SendActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_send" />
         <activity
             android:name=".ui.ConfirmationActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_confirmation" />
         <activity
             android:name=".ui.AddTokenActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_add_token" />
         <activity
             android:name=".ui.barcode.BarcodeCaptureActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_barcode" />
         <activity
             android:name=".ui.GasSettingsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_send_settings" />
 
         <meta-data
@@ -68,11 +80,19 @@
 
         <activity
             android:name=".ui.OnBoardingActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_on_boarding"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.CreateWalletActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_craeate_wallet"
+            android:parentActivityName=".ui.WalletsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.WalletCreatedActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_wallet_created"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
